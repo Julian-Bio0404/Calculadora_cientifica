@@ -92,20 +92,24 @@ def dividir(num):
 
     if contador_dividir == 0:
         num1 = float(num)
-        resultado = num1
+        resultado = num1 
     else:
         if contador_dividir == 1:
             resultado = num1 / float(num)
         else:
             resultado = float(resultado) / float(num)
-        numero_pantalla.set(resultado)
+
+        if num1 % float(num) == 0 or float(resultado) % float(num) == 0:
+            numero_pantalla.set(int(resultado))
+        else:
+            numero_pantalla.set(resultado)
         resultado = numero_pantalla.get()
     contador_dividir += 1
     operacion = "division"
     reset_pantalla = True
 
 
-#------------------funcion que muestra el resultado total---------------------#
+#------------------funcion resultado al pulsar "="---------------------#
 def el_resultado():
     global operacion
     global resultado
@@ -125,7 +129,10 @@ def el_resultado():
         resultado = 0
         contador_multiplicar = 0
     elif operacion == "division":
-        numero_pantalla.set(int(resultado) / int(numero_pantalla.get()))
+        if int(resultado) % int(numero_pantalla.get()) == 0:
+            numero_pantalla.set(int(int(resultado) / int(numero_pantalla.get())))
+        else:
+            numero_pantalla.set(int(resultado) / int(numero_pantalla.get()))
         resultado = 0
         contador_dividir = 0
 
