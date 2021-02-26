@@ -90,20 +90,25 @@ def dividir(num):
     global contador_dividir
     global num1
 
-    if contador_dividir == 0:
-        num1 = float(num)
-        resultado = num1 
-    else:
-        if contador_dividir == 1:
-            resultado = num1 / float(num)
-        else:
-            resultado = float(resultado) / float(num)
+    while True:
+        try:
+            if contador_dividir == 0:
+                num1 = float(num)
+                resultado = num1 
+            else:
+                if contador_dividir == 1:
+                    resultado = num1 / float(num)
+                else:
+                    resultado = float(resultado) / float(num)
 
-        if num1 % float(num) == 0 or float(resultado) % float(num) == 0:
-            numero_pantalla.set(int(resultado))
-        else:
-            numero_pantalla.set(resultado)
-        resultado = numero_pantalla.get()
+                if num1 % float(num) == 0 or float(resultado) % float(num) == 0:
+                    numero_pantalla.set(int(resultado))
+                else:
+                    numero_pantalla.set(resultado)
+                resultado = numero_pantalla.get()
+            break
+        except ZeroDivisionError:
+            numero_pantalla.set("Math ERROR")
     contador_dividir += 1
     operacion = "division"
     reset_pantalla = True
@@ -117,24 +122,30 @@ def el_resultado():
     global contador_multiplicar
     global contador_dividir
 
-    if operacion == "suma":
-        numero_pantalla.set(resultado + int(numero_pantalla.get()))
-        resultado = 0
-    elif operacion == "resta":
-        numero_pantalla.set(int(resultado) - int(numero_pantalla.get()))
-        contador_resta = 0
-        resultado = 0
-    elif operacion == "multiplicacion":
-        numero_pantalla.set(int(resultado) * int(numero_pantalla.get()))
-        resultado = 0
-        contador_multiplicar = 0
-    elif operacion == "division":
-        if int(resultado) % int(numero_pantalla.get()) == 0:
-            numero_pantalla.set(int(int(resultado) / int(numero_pantalla.get())))
-        else:
-            numero_pantalla.set(int(resultado) / int(numero_pantalla.get()))
-        resultado = 0
-        contador_dividir = 0
+    while True:
+        try:
+
+            if operacion == "suma":
+                numero_pantalla.set(resultado + int(numero_pantalla.get()))
+                resultado = 0
+            elif operacion == "resta":
+                numero_pantalla.set(int(resultado) - int(numero_pantalla.get()))
+                contador_resta = 0
+                resultado = 0
+            elif operacion == "multiplicacion":
+                numero_pantalla.set(int(resultado) * int(numero_pantalla.get()))
+                resultado = 0
+                contador_multiplicar = 0
+            elif operacion == "division":
+                if int(resultado) % int(numero_pantalla.get()) == 0:
+                    numero_pantalla.set(int(int(resultado) / int(numero_pantalla.get())))
+                else:
+                    numero_pantalla.set(int(resultado) / int(numero_pantalla.get()))
+            break
+        except ZeroDivisionError:
+            numero_pantalla.set("Math ERROR")
+    resultado = 0
+    contador_dividir = 0
 
 #-----------------------------botones fila1----------------------------------#
 boton7 = Button(frame1, text="7", width=3, command=lambda:numeroPulsado("7"))
