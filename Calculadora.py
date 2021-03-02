@@ -25,6 +25,19 @@ def numeroPulsado(num):
     else:
         numero_pantalla.set(numero_pantalla.get() + num)
 
+#--------------------funcion que reinicia-------------------#
+def reinicia():
+    global resultado
+    global reset_pantalla
+    resultado = 0
+    reset_pantalla = True
+    numero_pantalla.set(resultado)
+
+#--------------------funcion que borra----------------------#
+def borrar():
+    numero = numero_pantalla.get()
+    numero_pantalla.set(numero[:-1])
+
 #--------------------funcion suma---------------------------#
 def suma(num):
     global operacion
@@ -211,5 +224,12 @@ botonIgual = Button(frame1, text="=", width=3, command=lambda:el_resultado())
 botonIgual.grid(row=5, column=3)
 botonSum = Button(frame1, text="+", width=3, command=lambda:suma(numero_pantalla.get()))
 botonSum.grid(row=5, column=4)
+
+#-----------------------------botones fila5----------------------------------#
+botonac = Button(frame1, text="AC", width=3, command=lambda:reinicia())
+botonac.grid(row=6, column=1)
+botonDEL = Button(frame1, text="DEL", width=3, command=lambda:borrar())
+botonDEL.grid(row=6, column=2)
+
 
 root.mainloop()
