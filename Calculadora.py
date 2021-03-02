@@ -3,8 +3,8 @@ from tkinter import Frame, Entry, Tk, Button, StringVar
 root = Tk()
 frame1 = Frame(root)
 frame1.pack()
-operacion = ""
 
+operacion = ""
 resultado = 0
 reset_pantalla = False
 num1 = 0
@@ -30,10 +30,12 @@ def suma(num):
     global operacion
     global resultado
     global reset_pantalla
-    resultado += int(num)
+    resultado += float(num)
+    
+    numero_pantalla.set(entero_decimal(resultado))
+
     operacion = "suma"
     reset_pantalla = True
-    numero_pantalla.set(resultado)
 
 #--------------------funcion resta--------------------------#
 contador_resta = 0
@@ -45,15 +47,17 @@ def resta(num):
     global num1
     
     if contador_resta == 0:
-        num1 = int(num)
+        num1 = float(num)
         resultado = num1
     else:
         if contador_resta == 1:
-            resultado = num1 - int(num)
+            resultado = num1 - float(num)
         else:
-            resultado = int(resultado) - int(num)
-        numero_pantalla.set(resultado)
-        resultado = numero_pantalla.get()
+            resultado = float(resultado) - float(num)
+
+    numero_pantalla.set(entero_decimal(resultado))
+    resultado = numero_pantalla.get()
+
     contador_resta = contador_resta + 1
     operacion = "resta"
     reset_pantalla = True
@@ -68,15 +72,17 @@ def multiplicar(num):
     global num1
 
     if contador_multiplicar == 0:
-        num1 = int(num)
+        num1 = float(num)
         resultado = num1
     else:
         if contador_multiplicar == 1:
-            resultado = num1 * int(num)
+            resultado = num1 * float(num)
         else:
-            resultado = int(resultado) * int(num)
-        numero_pantalla.set(resultado)
-        resultado = numero_pantalla.get()
+            resultado = float(resultado) * float(num)
+    
+    numero_pantalla.set(entero_decimal(resultado))
+    resultado = numero_pantalla.get()
+
     contador_multiplicar += 1
     operacion ="multiplicacion"
     reset_pantalla = True
@@ -109,10 +115,22 @@ def dividir(num):
             break
         except ZeroDivisionError:
             numero_pantalla.set("Math ERROR")
+
     contador_dividir += 1
     operacion = "division"
     reset_pantalla = True
 
+#-----------------funcion que devuelve decimal o entero-----------------#
+def entero_decimal(result):
+    tipo_resultado = result
+    n_next_zero = str(tipo_resultado).split(".")
+    
+    if len(n_next_zero[1]) > 1 or n_next_zero[1] != "0":
+        tipo_resultado = float(tipo_resultado)
+    elif len(n_next_zero[1]) == 1:
+        tipo_resultado = int(float(tipo_resultado))
+
+    return tipo_resultado
 
 #------------------funcion resultado al pulsar "="---------------------#
 def el_resultado():
@@ -126,24 +144,31 @@ def el_resultado():
         try:
 
             if operacion == "suma":
-                numero_pantalla.set(resultado + int(numero_pantalla.get()))
+                numero_pantalla.set(entero_decimal(resultado) + int(numero_pantalla.get()))
                 resultado = 0
+
             elif operacion == "resta":
-                numero_pantalla.set(int(resultado) - int(numero_pantalla.get()))
+                resultado = float(resultado) - float(numero_pantalla.get())
+                numero_pantalla.set(entero_decimal(resultado))
                 contador_resta = 0
                 resultado = 0
+
             elif operacion == "multiplicacion":
-                numero_pantalla.set(int(resultado) * int(numero_pantalla.get()))
+                resultado = float(resultado) * float(numero_pantalla.get())
+                numero_pantalla.set(entero_decimal(resultado))
                 resultado = 0
                 contador_multiplicar = 0
+
             elif operacion == "division":
                 if int(resultado) % int(numero_pantalla.get()) == 0:
                     numero_pantalla.set(int(int(resultado) / int(numero_pantalla.get())))
                 else:
                     numero_pantalla.set(int(resultado) / int(numero_pantalla.get()))
             break
+
         except ZeroDivisionError:
             numero_pantalla.set("Math ERROR")
+
     resultado = 0
     contador_dividir = 0
 
@@ -180,7 +205,7 @@ botonRest.grid(row=4, column=4)
 #-----------------------------botones fila4----------------------------------#
 boton0 = Button(frame1, text="0", width=3, command=lambda:numeroPulsado("0"))
 boton0.grid(row=5, column=1)
-botonComa = Button(frame1, text=",", width=3, command=lambda:numeroPulsado(","))
+botonComa = Button(frame1, text=".", width=3, command=lambda:numeroPulsado("."))
 botonComa.grid(row=5, column=2)
 botonIgual = Button(frame1, text="=", width=3, command=lambda:el_resultado())
 botonIgual.grid(row=5, column=3)
