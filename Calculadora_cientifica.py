@@ -28,10 +28,20 @@ def numeroPulsado(num):
 
 #--------------------funcion que reinicia pantalla-------------------#
 def reinicia():
+    global operacion
     global resultado
     global reset_pantalla
+    global num1
+    global contador_resta
+    global contador_multiplicar
+    global contador_dividir
+    operacion = ""
     resultado = 0
     reset_pantalla = True
+    num1 = 0
+    contador_resta = 0
+    contador_multiplicar = 0
+
     numero_pantalla.set(resultado)
 
 #--------------------funcion que borra cifra en pantalla----------------------#
@@ -70,9 +80,8 @@ def resta(num):
             resultado = float(resultado) - float(num)
 
     numero_pantalla.set(entero_decimal(resultado))
-    resultado = numero_pantalla.get()
-
-    contador_resta = contador_resta + 1
+    
+    contador_resta += 1
     operacion = "resta"
     reset_pantalla = True
 
@@ -95,7 +104,6 @@ def multiplicar(num):
             resultado = float(resultado) * float(num)
     
     numero_pantalla.set(entero_decimal(resultado))
-    resultado = numero_pantalla.get()
 
     contador_multiplicar += 1
     operacion ="multiplicacion"
@@ -169,13 +177,19 @@ def factorial(num):
     resultado = float(num)
     resultado = int(resultado)
 
-    if resultado < 70:
-        for i in range(resultado):
-            resultado = resultado * (i + 1)
-        resultado = resultado / int(num)
-        numero_pantalla.set(int(resultado))
-    else:
-        numero_pantalla.set("Math ERROR")
+    while True:
+        try:
+
+            if resultado < 70:
+                for i in range(resultado):
+                    resultado = resultado * (i + 1)
+                resultado = resultado / int(num)
+                numero_pantalla.set(int(resultado))
+            else:
+                numero_pantalla.set("Math ERROR")
+            break
+        except ValueError:
+            numero_pantalla.set("Math ERROR")
 
     resultado = 0
     reset_pantalla = True
