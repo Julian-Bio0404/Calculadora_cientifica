@@ -26,7 +26,7 @@ def numeroPulsado(num):
     else:
         numero_pantalla.set(numero_pantalla.get() + num)
 
-#--------------------funcion que reinicia-------------------#
+#--------------------funcion que reinicia pantalla-------------------#
 def reinicia():
     global resultado
     global reset_pantalla
@@ -34,7 +34,7 @@ def reinicia():
     reset_pantalla = True
     numero_pantalla.set(resultado)
 
-#--------------------funcion que borra----------------------#
+#--------------------funcion que borra cifra en pantalla----------------------#
 def borrar():
     numero = numero_pantalla.get()
     numero_pantalla.set(numero[:-1])
@@ -161,7 +161,6 @@ def sqrt_exponencial(f, num):
             resultado = j(resultado)
             numero_pantalla.set(i + "(" + str(num) + ")")
             operacion = i
-    
 
 #------------------funcion factorial----------------------------------#
 def factorial(num):
@@ -184,11 +183,13 @@ def factorial(num):
 #-----------------funcion que devuelve decimal o entero-----------------#
 def entero_decimal(result):
     tipo_resultado = result
+    #crea lista de dos elementos. 1° n antes de la coma, 2° n despues de la coma.
     n_next_zero = str(tipo_resultado).split(".")
     
-    if len(n_next_zero[1]) > 1 or n_next_zero[1] != "0":
+    #Si el segundo elemento es diferente de "0", devolverá decimal
+    if n_next_zero[1] != "0":
         tipo_resultado = float(tipo_resultado)
-    elif len(n_next_zero[1]) == 1:
+    else:
         tipo_resultado = int(float(tipo_resultado))
 
     return tipo_resultado
@@ -214,7 +215,8 @@ def el_resultado():
     while True:
         try:
             if operacion == "suma":
-                numero_pantalla.set(entero_decimal(resultado) + int(numero_pantalla.get()))
+                resultado = float(resultado) + float(numero_pantalla.get())
+                numero_pantalla.set(entero_decimal(resultado))
 
             elif operacion == "resta":
                 resultado = float(resultado) - float(numero_pantalla.get())
